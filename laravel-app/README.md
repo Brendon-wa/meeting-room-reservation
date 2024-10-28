@@ -47,11 +47,18 @@ Este projeto consiste em uma API REST desenvolvida em PHP com o framework Larave
 
 ### SQL para criação da base de dados
 
+## Estrutura do Banco de Dados
+
+### SQL para criação da base de dados
+
 ```sql
+-- Criação do banco de dados
 CREATE DATABASE meeting_room_reservation;
 
+-- Conectar ao banco de dados
 \c meeting_room_reservation;
 
+-- Criação da tabela de salas
 CREATE TABLE rooms (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -62,6 +69,7 @@ CREATE TABLE rooms (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Criação da tabela de usuários
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -73,6 +81,7 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Criação da tabela de reservas
 CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
     room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
@@ -86,14 +95,16 @@ CREATE TABLE bookings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+```
 
 ## Instruções de Instalação e Execução
 
 1. **Clone o repositório:**
 
    ```bash
-   git clone https://github.com/seu_usuario/reserva_salas.git
-   cd reserva_salas/backend```
+        git clone https://github.com/Brendon-wa/meeting-room-reservation
+        cd laravel-app
+   ```
 
 2. **Instale as dependências do Laravel:**
 
@@ -101,12 +112,14 @@ CREATE TABLE bookings (
 
 3. **Configure o arquivo .env para acessar a base de dados**
 
-```DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=meeting_room_reservation
-DB_USERNAME=postgres
-DB_PASSWORD=postgres```
+```
+    DB_CONNECTION=pgsql
+    DB_HOST=127.0.0.1
+    DB_PORT=5432
+    DB_DATABASE=meeting_room_reservation
+    DB_USERNAME=postgres
+    DB_PASSWORD=postgres
+```
 
 4. **Execute as migrations**
 
@@ -124,11 +137,11 @@ DB_PASSWORD=postgres```
 
 ```php artisan serve```
 
-Documentação da API REST
+## Documentação da API REST
 
-1. Endpoints de Autenticação
+### 1. Endpoints de Autenticação
 
-Login
+- **Login**
 
 URL: POST http://localhost:8000/api/login
 Descrição: Permite que os usuários façam login na aplicação. Requer credenciais do usuário e, em caso de sucesso, retorna um token de autenticação.
@@ -138,7 +151,7 @@ Método: POST
 URL: http://localhost:8000/api/login
 Aba "Body": selecione "raw" e escolha "JSON" como formato. Cole o JSON acima.
 
-Registro
+- **Registro**
 
 URL: POST http://127.0.0.1:8000/api/register
 Descrição: Permite que novos usuários se registrem na aplicação, fornecendo suas informações básicas.
@@ -148,7 +161,7 @@ Método: POST
 URL: http://127.0.0.1:8000/api/register
 Aba "Body": selecione "raw" e escolha "JSON" como formato. Cole o JSON acima.
 
-Obter Informações do Usuário
+- **Obter Informações do Usuário**
 
 URL: GET http://127.0.0.1:8000/api/user
 Descrição: Retorna as informações do usuário autenticado. Requer um token de autenticação no cabeçalho da requisição.
@@ -159,7 +172,7 @@ URL: http://127.0.0.1:8000/api/user
 Na aba "Headers", adicione: Key: Authorization, Value: Bearer <Token>
 Clique em "Send" para fazer a requisição.
 
-Obter Todas as Salas
+- **Obter Todas as Salas**
 
 URL: GET http://localhost:8000/api/rooms/all
 Descrição: Retorna uma lista de todas as salas disponíveis. Requer um token de autenticação no cabeçalho da requisição.
@@ -168,7 +181,7 @@ Método: GET
 URL: http://localhost:8000/api/rooms/all
 Clique em "Send" para fazer a requisição.
 
-Obter Horários Disponíveis por Sala
+- **Obter Horários Disponíveis por Sala**
 
 URL: GET http://localhost:8000/api/rooms?date=2024-10-30&room_id=2
 Descrição: Retorna as salas disponíveis para a data especificada. Requer um token de autenticação no cabeçalho da requisição.
@@ -179,7 +192,7 @@ URL: http://localhost:8000/api/rooms?date=2024-10-30&room_id=2
 Na aba "Headers", adicione: Key: Authorization, Value: Bearer <Token>
 Clique em "Send" para fazer a requisição.
 
-Obter Detalhes da Sala
+- **Obter Detalhes da Sala**
 
 URL: GET http://localhost:8000/api/room/1
 Descrição: Retorna os detalhes de uma sala específica, identificada pelo seu ID. Este endpoint não requer autenticação.
@@ -188,7 +201,7 @@ Método: GET
 URL: http://localhost:8000/api/room/1
 Clique em "Send" para fazer a requisição.
 
-Obter Horários Disponíveis para Fim de Reserva
+- **Obter Horários Disponíveis para Fim de Reserva**
 
 URL: GET http://localhost:8000/api/rooms/endTime?room_id=1&date=2024-10-26&start_time=19:00
 Descrição: Retorna os horários disponíveis para o fim da reserva, com base na data, ID da sala e horário de início fornecidos.
@@ -197,7 +210,7 @@ Método: GET
 URL: http://localhost:8000/api/rooms/endTime?room_id=1&date=2024-10-26&start_time=19:00
 Clique em "Send" para fazer a requisição.
 
-Obter Reservas
+- **Obter Reservas**
 
 URL: GET http://localhost:8000/api/bookings
 Descrição: Retorna a lista de reservas do usuário autenticado. Este endpoint requer autenticação.
@@ -208,7 +221,7 @@ URL: http://localhost:8000/api/bookings
 Na aba "Headers", adicione: Key: Authorization, Value: Bearer <Token>
 Clique em "Send" para fazer a requisição.
 
-Obter Detalhes da Reserva
+- **Obter Detalhes da Reserva**
 
 URL: GET http://localhost:8000/api/bookings/3/224
 Descrição: Retorna os detalhes de uma reserva específica, identificada pelo ID da sala e pelo ID da reserva. Este endpoint requer autenticação.
@@ -219,7 +232,7 @@ URL: http://localhost:8000/api/bookings/3/224
 Na aba "Headers", adicione: Key: Authorization, Value: Bearer <Token>
 Clique em "Send" para fazer a requisição.
 
-Criar Nova Reserva
+- **Criar Nova Reserva**
 
 URL: POST http://localhost:8000/api/booking
 Descrição: Permite que um usuário crie uma nova reserva de sala. Este endpoint requer autenticação.
@@ -231,7 +244,7 @@ Na aba "Headers", adicione: Key: Authorization, Value: Bearer <Token>
 Na aba "Body", selecione "raw" e escolha "JSON" como formato. Cole o JSON acima.
 Clique em "Send" para fazer a requisição.
 
-Cancelar Reserva
+- **Cancelar Reserva**
 
 URL: PUT http://localhost:8000/api/booking/cancel/103
 Descrição: Cancela uma reserva específica, identificada pelo seu ID. Este endpoint requer autenticação.
@@ -242,7 +255,7 @@ URL: http://localhost:8000/api/booking/cancel/103
 Na aba "Headers", adicione: Key: Authorization, Value: Bearer <Token>
 Clique em "Send" para fazer a requisição.
 
-Atualizar Reserva
+- **Atualizar Reserva**
 
 URL: PUT http://localhost:8000/api/booking/295
 Descrição: Permite que um usuário atualize os detalhes de uma reserva existente, identificada pelo seu ID. Este endpoint requer autenticação.
@@ -254,9 +267,9 @@ Na aba "Headers", adicione: Key: Authorization, Value: Bearer <Token>
 Na aba "Body", selecione "raw" e escolha "JSON" como formato. Cole o JSON acima.
 Clique em "Send" para fazer a requisição.
 
-2. Admin
+### 2. Admin
 
-Listar Usuários (Admin)
+- **Listar Usuários (Admin)**
 
 URL: GET http://127.0.0.1:8000/api/users
 Descrição: Retorna uma lista de todos os usuários registrados no sistema. Este endpoint requer autenticação e o usuário deve ser um admin.
@@ -267,7 +280,7 @@ URL: http://127.0.0.1:8000/api/users
 Na aba "Headers", adicione: Key: Authorization, Value: Bearer <Token>
 Clique em "Send" para fazer a requisição.
 
-Listar Todas Reservas (Admin)
+- **Listar Todas Reservas (Admin)**
 
 URL: GET http://localhost:8000/api/bookings/admin
 Descrição: Retorna uma lista de todas as reservas no sistema. Este endpoint requer autenticação e o usuário deve ser um admin.
@@ -278,7 +291,7 @@ URL: http://localhost:8000/api/bookings/admin
 Na aba "Headers", adicione: Key: Authorization, Value: Bearer <Token>
 Clique em "Send" para fazer a requisição.
 
-Criar Nova Sala (Admin)
+- **Criar Nova Sala (Admin)**
 
 URL: POST http://localhost:8000/api/room
 Descrição: Permite que um admin crie uma nova sala no sistema.
@@ -290,7 +303,7 @@ Na aba "Headers", adicione: Key: Authorization, Value: Bearer <Token>
 Na aba "Body", selecione "raw" e escolha "JSON" como formato. Cole o JSON acima.
 Clique em "Send" para fazer a requisição.
 
-Deletar Sala (Admin)
+- **Deletar Sala (Admin)**
 
 URL: DELETE http://localhost:8000/api/room/5
 Descrição: Permite que um admin delete uma sala específica, identificada pelo seu ID.

@@ -49,8 +49,8 @@ Este projeto é o frontend da aplicação de reserva de salas, desenvolvido em R
 1. **Clone o repositório:**
 
    ```bash
-   git clone https://github.com/seu_usuario/reserva_salas.git
-   cd reserva_salas/frontend
+   git clone https://github.com/Brendon-wa/meeting-room-reservation
+   cd next-app
 
 2. **Instale as dependências do projeto:**
 
